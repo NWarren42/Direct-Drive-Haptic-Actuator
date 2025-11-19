@@ -1,8 +1,58 @@
-\documentclass{article}
-\usepackage{amsmath}
+%*************************************************************************************************************
+% PREAMBLE STUFF
+%*************************************************************************************************************
+\documentclass[12pt]{report}
+\usepackage{quthesis}
+\include{myPreamble}
+
+%*************************************************************************************************************
+% DOCUMENT
+%*************************************************************************************************************
 \begin{document}
-Hello world! Here’s an equation:
-\[
-E = mc^2
-\]
+
+%*************************************************************************************************************
+% TITLE
+%*************************************************************************************************************
+
+\title{Direct Drive Haptic Actuator - Fall Update}
+\author{Noah Warren}
+
+\dept{Department of Physics, Engineering Physics and Astronomy}
+\degree{Bachelor of Applied Science}
+
+\submitdate{November 2025}
+\figurespagetrue
+\tablespagetrue
+
+\beforepreface
+
+\prefacesection{Abstract / Executive Summary}
+\input{Abstract}
+
+\prefacesection{Acknowledgments}
+Students may include an acknowledgement section if they wish, but it is not necessary to do so.
+
+\singlespacing \afterpreface \doublespacing
+
+%*************************************************************************************************************
+% MEATY CHAPTERS
+%*************************************************************************************************************
+
+\include{Introduction}
+\include{report}
+\include{conclusion}
+
+%*************************************************************************************************************
+% BIBLIOGRAPHY
+%*************************************************************************************************************
+\bibliographystyle{ieeetr}
+\bibliography{thesis}
+
+%*************************************************************************************************************
+% APPENDICES
+%*************************************************************************************************************
+\updatechaptername
+\appendix
+\include{statement}
+
 \end{document}
