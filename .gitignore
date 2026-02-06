@@ -1,42 +1,81 @@
-# --- MATLAB/Simulink Specific ---
-*.asv
-*.log
-*.mat
-*.pem
+# MATLAB/Simulink Build Artifacts
 *.slxc
-slprj/
-[Tt]ags/
-[Mm]odels/[Ss]lprj/
 *.autosave
+slprj/
+*.slxc
+*.mexw64
+*.mexw32
+*.mexa64
+*.mexmaci64
 
-# --- QUARC/Code Generation ---
+# QUARC Build Artifacts
+*.rtw
 *_quarc_win64/
 *_quarc_linux/
-*_quarc_windows/
-*_quarc_linux_raspberrypi/
-# Add other QUARC target folders as necessary
-*.c
-*.cpp
-*.h
-*.mk
-*.obj
+*_quarc_target/
 *.o
-*.a
+*.obj
 *.lib
-*.elf
+*.a
 *.so
+*.dll
+*.exe
+quarc_*.c
+quarc_*.h
+*.mk
+*.dep
+
+# Code Generation
+codegen/
+*.c.bak
+*.h.bak
+
+# Simulink Cache
+*.slxc
+*.mdl.autosave
+*.slx.autosave
+*.mdl.r*
+*.slx.r*
+
+# QUARC-specific
+*.qc
+*.exp
+*.pdb
+*.ilk
 *.map
-# QUARC build generated files
-*_rtw.txt
-*_rtw_info.mat
 
-# --- Local Project Settings ---
-.matlab/
-.simulink/
-*Local*
-*local*
-*private*
+# Build directories (adjust based on your model name)
+# Replace "your_model_name" with your actual model name
+# your_model_name_quarc_win64/
+# your_model_name_quarc_linux/
 
-# --- OS Specific ---
+# Alternative: ignore all QUARC build directories
+*_quarc_*/
+
+# MATLAB temporary files
+*.asv
+*.m~
+
+# Data files (optional - uncomment if you don't want to track data)
+# *.mat
+# *.csv
+# *.dat
+
+# Logs
+*.log
+
+# OS-specific
 .DS_Store
 Thumbs.db
+desktop.ini
+
+# IDE/Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Backup files
+*_backup/
+backup_*/
