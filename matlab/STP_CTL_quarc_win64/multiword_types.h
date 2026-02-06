@@ -7,9 +7,9 @@
  *
  * Code generation for model "STP_CTL".
  *
- * Model version              : 1.1
+ * Model version              : 1.16
  * Simulink Coder version : 9.1 (R2019a) 23-Nov-2018
- * C source code generated on : Wed Nov 19 18:23:30 2025
+ * C source code generated on : Thu Feb  5 20:44:39 2026
  *
  * Target selection: quarc_win64.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping

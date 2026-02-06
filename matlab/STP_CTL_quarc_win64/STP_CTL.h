@@ -7,9 +7,9 @@
  *
  * Code generation for model "STP_CTL".
  *
- * Model version              : 1.1
+ * Model version              : 1.16
  * Simulink Coder version : 9.1 (R2019a) 23-Nov-2018
- * C source code generated on : Wed Nov 19 18:23:30 2025
+ * C source code generated on : Thu Feb  5 20:44:39 2026
  *
  * Target selection: quarc_win64.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -20,10 +20,10 @@
 
 #ifndef RTW_HEADER_STP_CTL_h_
 #define RTW_HEADER_STP_CTL_h_
+#include <math.h>
 #include <string.h>
 #ifndef STP_CTL_COMMON_INCLUDES_
 # define STP_CTL_COMMON_INCLUDES_
-#include <math.h>
 #include "rtwtypes.h"
 #include "zero_crossing_types.h"
 #include "simstruc.h"
@@ -612,11 +612,11 @@
 #endif
 
 #ifndef rtmGetTaskCounters
-# define rtmGetTaskCounters(rtm)       ((rtm)->Timing.TaskCounters)
+# define rtmGetTaskCounters(rtm)       ()
 #endif
 
 #ifndef rtmSetTaskCounters
-# define rtmSetTaskCounters(rtm, val)  ((rtm)->Timing.TaskCounters = (val))
+# define rtmSetTaskCounters(rtm, val)  ()
 #endif
 
 #ifndef rtmGetTaskTimeArray
@@ -776,11 +776,7 @@
 #endif
 
 #ifndef rtmIsSampleHit
-# define rtmIsSampleHit(rtm, sti, tid) (((rtm)->Timing.sampleTimeTaskIDPtr[sti] == (tid)))
-#endif
-
-#ifndef rtmStepTask
-# define rtmStepTask(rtm, idx)         ((rtm)->Timing.TaskCounters.TID[(idx)] == 0)
+# define rtmIsSampleHit(rtm, sti, tid) ((rtm)->Timing.sampleHits[(rtm)->Timing.sampleTimeTaskIDPtr[sti]])
 #endif
 
 #ifndef rtmGetStopRequested
@@ -827,10 +823,6 @@
 # define rtmSetTStart(rtm, val)        ((rtm)->Timing.tStart = (val))
 #endif
 
-#ifndef rtmTaskCounter
-# define rtmTaskCounter(rtm, idx)      ((rtm)->Timing.TaskCounters.TID[(idx)])
-#endif
-
 #ifndef rtmGetTaskTime
 # define rtmGetTaskTime(rtm, sti)      (rtmGetTPtr((rtm))[(rtm)->Timing.sampleTimeTaskIDPtr[sti]])
 #endif
@@ -854,7 +846,13 @@
 
 /* Block signals (default storage) */
 typedef struct {
-  real_T HILReadAnalog;                /* '<Root>/HIL Read Analog' */
+  real_T F1;                           /* '<Root>/HIL Read Analog' */
+  real_T T1;                           /* '<Root>/HIL Read Analog' */
+  real_T F2;                           /* '<Root>/HIL Read Analog' */
+  real_T T2;                           /* '<Root>/HIL Read Analog' */
+  real_T F3;                           /* '<Root>/HIL Read Analog' */
+  real_T T3;                           /* '<Root>/HIL Read Analog' */
+  real_T PWM;                          /* '<Root>/MATLAB Function' */
 } B_STP_CTL_T;
 
 /* Block states (default storage) for system '<Root>' */
@@ -865,25 +863,38 @@ typedef struct {
   real_T HILInitialize_AOMaximums[8];  /* '<Root>/HIL Initialize' */
   real_T HILInitialize_AOVoltages[8];  /* '<Root>/HIL Initialize' */
   real_T HILInitialize_FilterFrequency[8];/* '<Root>/HIL Initialize' */
-  real_T HILReadAnalog_Buffer;         /* '<Root>/HIL Read Analog' */
+  real_T HILInitialize_POSortedFreqs;  /* '<Root>/HIL Initialize' */
+  real_T HILInitialize_POValues;       /* '<Root>/HIL Initialize' */
+  real_T HILInitialize1_AIMinimums[16];/* '<Root>/HIL Initialize1' */
+  real_T HILInitialize1_AIMaximums[16];/* '<Root>/HIL Initialize1' */
+  real_T HILReadAnalog_Buffer[6];      /* '<Root>/HIL Read Analog' */
+  real_T pulses_target;                /* '<Root>/MATLAB Function' */
+  real_T pulses_sent;                  /* '<Root>/MATLAB Function' */
+  real_T active;                       /* '<Root>/MATLAB Function' */
   t_card HILInitialize_Card;           /* '<Root>/HIL Initialize' */
+  t_card HILInitialize1_Card;          /* '<Root>/HIL Initialize1' */
+  void *HILWriteDigital_PWORK;         /* '<S1>/HIL Write Digital' */
+  void *HILWriteDigital1_PWORK;        /* '<S1>/HIL Write Digital1' */
+  void *HILWritePWM_PWORK;             /* '<S1>/HIL Write PWM' */
   struct {
-    real_T Amp;
-    real_T W;
-    real_T Sin_w_dt;
-    real_T Cos_w_dt;
-    real_T Sin_w_t;
-    real_T Cos_w_t;
-  } SmoothSignalGenerator_RWORK;       /* '<Root>/Smooth Signal Generator' */
+    void *LoggedData;
+  } PWMOutput_PWORK;                   /* '<Root>/PWM Output' */
 
   void *HILReadAnalog_PWORK;           /* '<Root>/HIL Read Analog' */
   struct {
     void *LoggedData;
   } Scope_PWORK;                       /* '<Root>/Scope' */
 
-  void *HILWriteAnalog_PWORK;          /* '<Root>/HIL Write Analog' */
+  int32_T HILInitialize_DOStates[2];   /* '<Root>/HIL Initialize' */
   int32_T HILInitialize_QuadratureModes[8];/* '<Root>/HIL Initialize' */
   int32_T HILInitialize_InitialEICounts[8];/* '<Root>/HIL Initialize' */
+  int32_T HILInitialize_POModeValues;  /* '<Root>/HIL Initialize' */
+  int32_T HILInitialize_POAlignValues; /* '<Root>/HIL Initialize' */
+  int32_T HILInitialize_POPolarityVals;/* '<Root>/HIL Initialize' */
+  uint32_T HILInitialize_POSortedChans;/* '<Root>/HIL Initialize' */
+  boolean_T HILInitialize_DOBits[2];   /* '<Root>/HIL Initialize' */
+  t_boolean HILWriteDigital_Buffer;    /* '<S1>/HIL Write Digital' */
+  t_boolean HILWriteDigital1_Buffer;   /* '<S1>/HIL Write Digital1' */
 } DW_STP_CTL_T;
 
 /* Backward compatible GRT Identifiers */
@@ -896,12 +907,25 @@ typedef struct {
 
 /* Parameters (default storage) */
 struct P_STP_CTL_T_ {
-  uint32_T HILReadAnalog_channels;     /* Mask Parameter: HILReadAnalog_channels
+  uint32_T HILWriteDigital_channels; /* Mask Parameter: HILWriteDigital_channels
+                                      * Referenced by: '<S1>/HIL Write Digital'
+                                      */
+  uint32_T HILWriteDigital1_channels;
+                                    /* Mask Parameter: HILWriteDigital1_channels
+                                     * Referenced by: '<S1>/HIL Write Digital1'
+                                     */
+  uint32_T HILWritePWM_channels;       /* Mask Parameter: HILWritePWM_channels
+                                        * Referenced by: '<S1>/HIL Write PWM'
+                                        */
+  uint32_T HILReadAnalog_channels[6];  /* Mask Parameter: HILReadAnalog_channels
                                         * Referenced by: '<Root>/HIL Read Analog'
                                         */
-  uint32_T HILWriteAnalog_channels;   /* Mask Parameter: HILWriteAnalog_channels
-                                       * Referenced by: '<Root>/HIL Write Analog'
-                                       */
+  real_T Constant4_Value;              /* Expression: 0
+                                        * Referenced by: '<Root>/Constant4'
+                                        */
+  real_T Constant_Value;               /* Expression: 1
+                                        * Referenced by: '<Root>/Constant'
+                                        */
   real_T HILInitialize_OOTerminate;/* Expression: set_other_outputs_at_terminate
                                     * Referenced by: '<Root>/HIL Initialize'
                                     */
@@ -947,15 +971,46 @@ struct P_STP_CTL_T_ {
   real_T HILInitialize_POInitial;      /* Expression: initial_pwm_outputs
                                         * Referenced by: '<Root>/HIL Initialize'
                                         */
-  real_T SmoothSignalGenerator_InitialPh;/* Expression: initial_phase
-                                          * Referenced by: '<Root>/Smooth Signal Generator'
-                                          */
-  real_T SmoothSignalGenerator_Amplitude;/* Expression: i_amplitude
-                                          * Referenced by: '<Root>/Smooth Signal Generator'
-                                          */
-  real_T SmoothSignalGenerator_Frequency;/* Expression: i_frequency
-                                          * Referenced by: '<Root>/Smooth Signal Generator'
-                                          */
+  real_T HILInitialize1_OOTerminate;
+                                   /* Expression: set_other_outputs_at_terminate
+                                    * Referenced by: '<Root>/HIL Initialize1'
+                                    */
+  real_T HILInitialize1_OOExit;   /* Expression: set_other_outputs_at_switch_out
+                                   * Referenced by: '<Root>/HIL Initialize1'
+                                   */
+  real_T HILInitialize1_OOStart;       /* Expression: set_other_outputs_at_start
+                                        * Referenced by: '<Root>/HIL Initialize1'
+                                        */
+  real_T HILInitialize1_OOEnter;   /* Expression: set_other_outputs_at_switch_in
+                                    * Referenced by: '<Root>/HIL Initialize1'
+                                    */
+  real_T HILInitialize1_POFinal;       /* Expression: final_pwm_outputs
+                                        * Referenced by: '<Root>/HIL Initialize1'
+                                        */
+  real_T HILInitialize1_AIHigh;        /* Expression: analog_input_maximums
+                                        * Referenced by: '<Root>/HIL Initialize1'
+                                        */
+  real_T HILInitialize1_AILow;         /* Expression: analog_input_minimums
+                                        * Referenced by: '<Root>/HIL Initialize1'
+                                        */
+  real_T HILInitialize1_POFrequency;   /* Expression: pwm_frequency
+                                        * Referenced by: '<Root>/HIL Initialize1'
+                                        */
+  real_T HILInitialize1_POInitial;     /* Expression: initial_pwm_outputs
+                                        * Referenced by: '<Root>/HIL Initialize1'
+                                        */
+  real_T Constant1_Value;              /* Expression: 1
+                                        * Referenced by: '<Root>/Constant1'
+                                        */
+  real_T Constant3_Value;              /* Expression: 180
+                                        * Referenced by: '<Root>/Constant3'
+                                        */
+  real_T Constant5_Value;              /* Expression: 10000
+                                        * Referenced by: '<Root>/Constant5'
+                                        */
+  real_T Constant2_Value;              /* Expression: 1
+                                        * Referenced by: '<Root>/Constant2'
+                                        */
   int32_T HILInitialize_CKChannels[2];
                                  /* Computed Parameter: HILInitialize_CKChannels
                                   * Referenced by: '<Root>/HIL Initialize'
@@ -973,12 +1028,23 @@ struct P_STP_CTL_T_ {
   int32_T HILInitialize_POModes;    /* Computed Parameter: HILInitialize_POModes
                                      * Referenced by: '<Root>/HIL Initialize'
                                      */
+  int32_T HILInitialize1_EIInitial;
+                                 /* Computed Parameter: HILInitialize1_EIInitial
+                                  * Referenced by: '<Root>/HIL Initialize1'
+                                  */
+  int32_T HILInitialize1_POModes;  /* Computed Parameter: HILInitialize1_POModes
+                                    * Referenced by: '<Root>/HIL Initialize1'
+                                    */
   uint32_T HILInitialize_AIChannels[8];
                                  /* Computed Parameter: HILInitialize_AIChannels
                                   * Referenced by: '<Root>/HIL Initialize'
                                   */
   uint32_T HILInitialize_AOChannels[8];
                                  /* Computed Parameter: HILInitialize_AOChannels
+                                  * Referenced by: '<Root>/HIL Initialize'
+                                  */
+  uint32_T HILInitialize_DOChannels[2];
+                                 /* Computed Parameter: HILInitialize_DOChannels
                                   * Referenced by: '<Root>/HIL Initialize'
                                   */
   uint32_T HILInitialize_EIChannels[8];
@@ -989,6 +1055,18 @@ struct P_STP_CTL_T_ {
                                /* Computed Parameter: HILInitialize_EIQuadrature
                                 * Referenced by: '<Root>/HIL Initialize'
                                 */
+  uint32_T HILInitialize_POChannels;
+                                 /* Computed Parameter: HILInitialize_POChannels
+                                  * Referenced by: '<Root>/HIL Initialize'
+                                  */
+  uint32_T HILInitialize1_AIChannels[16];
+                                /* Computed Parameter: HILInitialize1_AIChannels
+                                 * Referenced by: '<Root>/HIL Initialize1'
+                                 */
+  uint32_T HILInitialize1_EIQuadrature;
+                              /* Computed Parameter: HILInitialize1_EIQuadrature
+                               * Referenced by: '<Root>/HIL Initialize1'
+                               */
   boolean_T HILInitialize_Active;    /* Computed Parameter: HILInitialize_Active
                                       * Referenced by: '<Root>/HIL Initialize'
                                       */
@@ -1098,12 +1176,144 @@ struct P_STP_CTL_T_ {
                                   /* Computed Parameter: HILInitialize_DOInitial
                                    * Referenced by: '<Root>/HIL Initialize'
                                    */
+  boolean_T HILInitialize1_Active;  /* Computed Parameter: HILInitialize1_Active
+                                     * Referenced by: '<Root>/HIL Initialize1'
+                                     */
+  boolean_T HILInitialize1_AOTerminate;
+                               /* Computed Parameter: HILInitialize1_AOTerminate
+                                * Referenced by: '<Root>/HIL Initialize1'
+                                */
+  boolean_T HILInitialize1_AOExit;  /* Computed Parameter: HILInitialize1_AOExit
+                                     * Referenced by: '<Root>/HIL Initialize1'
+                                     */
+  boolean_T HILInitialize1_DOTerminate;
+                               /* Computed Parameter: HILInitialize1_DOTerminate
+                                * Referenced by: '<Root>/HIL Initialize1'
+                                */
+  boolean_T HILInitialize1_DOExit;  /* Computed Parameter: HILInitialize1_DOExit
+                                     * Referenced by: '<Root>/HIL Initialize1'
+                                     */
+  boolean_T HILInitialize1_POTerminate;
+                               /* Computed Parameter: HILInitialize1_POTerminate
+                                * Referenced by: '<Root>/HIL Initialize1'
+                                */
+  boolean_T HILInitialize1_POExit;  /* Computed Parameter: HILInitialize1_POExit
+                                     * Referenced by: '<Root>/HIL Initialize1'
+                                     */
+  boolean_T HILInitialize1_CKPStart;
+                                  /* Computed Parameter: HILInitialize1_CKPStart
+                                   * Referenced by: '<Root>/HIL Initialize1'
+                                   */
+  boolean_T HILInitialize1_CKPEnter;
+                                  /* Computed Parameter: HILInitialize1_CKPEnter
+                                   * Referenced by: '<Root>/HIL Initialize1'
+                                   */
+  boolean_T HILInitialize1_CKStart;/* Computed Parameter: HILInitialize1_CKStart
+                                    * Referenced by: '<Root>/HIL Initialize1'
+                                    */
+  boolean_T HILInitialize1_CKEnter;/* Computed Parameter: HILInitialize1_CKEnter
+                                    * Referenced by: '<Root>/HIL Initialize1'
+                                    */
+  boolean_T HILInitialize1_AIPStart;
+                                  /* Computed Parameter: HILInitialize1_AIPStart
+                                   * Referenced by: '<Root>/HIL Initialize1'
+                                   */
+  boolean_T HILInitialize1_AIPEnter;
+                                  /* Computed Parameter: HILInitialize1_AIPEnter
+                                   * Referenced by: '<Root>/HIL Initialize1'
+                                   */
+  boolean_T HILInitialize1_AOPStart;
+                                  /* Computed Parameter: HILInitialize1_AOPStart
+                                   * Referenced by: '<Root>/HIL Initialize1'
+                                   */
+  boolean_T HILInitialize1_AOPEnter;
+                                  /* Computed Parameter: HILInitialize1_AOPEnter
+                                   * Referenced by: '<Root>/HIL Initialize1'
+                                   */
+  boolean_T HILInitialize1_AOStart;/* Computed Parameter: HILInitialize1_AOStart
+                                    * Referenced by: '<Root>/HIL Initialize1'
+                                    */
+  boolean_T HILInitialize1_AOEnter;/* Computed Parameter: HILInitialize1_AOEnter
+                                    * Referenced by: '<Root>/HIL Initialize1'
+                                    */
+  boolean_T HILInitialize1_AOReset;/* Computed Parameter: HILInitialize1_AOReset
+                                    * Referenced by: '<Root>/HIL Initialize1'
+                                    */
+  boolean_T HILInitialize1_DOPStart;
+                                  /* Computed Parameter: HILInitialize1_DOPStart
+                                   * Referenced by: '<Root>/HIL Initialize1'
+                                   */
+  boolean_T HILInitialize1_DOPEnter;
+                                  /* Computed Parameter: HILInitialize1_DOPEnter
+                                   * Referenced by: '<Root>/HIL Initialize1'
+                                   */
+  boolean_T HILInitialize1_DOStart;/* Computed Parameter: HILInitialize1_DOStart
+                                    * Referenced by: '<Root>/HIL Initialize1'
+                                    */
+  boolean_T HILInitialize1_DOEnter;/* Computed Parameter: HILInitialize1_DOEnter
+                                    * Referenced by: '<Root>/HIL Initialize1'
+                                    */
+  boolean_T HILInitialize1_DOReset;/* Computed Parameter: HILInitialize1_DOReset
+                                    * Referenced by: '<Root>/HIL Initialize1'
+                                    */
+  boolean_T HILInitialize1_EIPStart;
+                                  /* Computed Parameter: HILInitialize1_EIPStart
+                                   * Referenced by: '<Root>/HIL Initialize1'
+                                   */
+  boolean_T HILInitialize1_EIPEnter;
+                                  /* Computed Parameter: HILInitialize1_EIPEnter
+                                   * Referenced by: '<Root>/HIL Initialize1'
+                                   */
+  boolean_T HILInitialize1_EIStart;/* Computed Parameter: HILInitialize1_EIStart
+                                    * Referenced by: '<Root>/HIL Initialize1'
+                                    */
+  boolean_T HILInitialize1_EIEnter;/* Computed Parameter: HILInitialize1_EIEnter
+                                    * Referenced by: '<Root>/HIL Initialize1'
+                                    */
+  boolean_T HILInitialize1_POPStart;
+                                  /* Computed Parameter: HILInitialize1_POPStart
+                                   * Referenced by: '<Root>/HIL Initialize1'
+                                   */
+  boolean_T HILInitialize1_POPEnter;
+                                  /* Computed Parameter: HILInitialize1_POPEnter
+                                   * Referenced by: '<Root>/HIL Initialize1'
+                                   */
+  boolean_T HILInitialize1_POStart;/* Computed Parameter: HILInitialize1_POStart
+                                    * Referenced by: '<Root>/HIL Initialize1'
+                                    */
+  boolean_T HILInitialize1_POEnter;/* Computed Parameter: HILInitialize1_POEnter
+                                    * Referenced by: '<Root>/HIL Initialize1'
+                                    */
+  boolean_T HILInitialize1_POReset;/* Computed Parameter: HILInitialize1_POReset
+                                    * Referenced by: '<Root>/HIL Initialize1'
+                                    */
+  boolean_T HILInitialize1_OOReset;/* Computed Parameter: HILInitialize1_OOReset
+                                    * Referenced by: '<Root>/HIL Initialize1'
+                                    */
+  boolean_T HILInitialize1_DOFinal;/* Computed Parameter: HILInitialize1_DOFinal
+                                    * Referenced by: '<Root>/HIL Initialize1'
+                                    */
+  boolean_T HILInitialize1_DOInitial;
+                                 /* Computed Parameter: HILInitialize1_DOInitial
+                                  * Referenced by: '<Root>/HIL Initialize1'
+                                  */
+  boolean_T HILWriteDigital_Active;/* Computed Parameter: HILWriteDigital_Active
+                                    * Referenced by: '<S1>/HIL Write Digital'
+                                    */
+  boolean_T HILWriteDigital1_Active;
+                                  /* Computed Parameter: HILWriteDigital1_Active
+                                   * Referenced by: '<S1>/HIL Write Digital1'
+                                   */
+  boolean_T HILWritePWM_Active;        /* Computed Parameter: HILWritePWM_Active
+                                        * Referenced by: '<S1>/HIL Write PWM'
+                                        */
   boolean_T HILReadAnalog_Active;    /* Computed Parameter: HILReadAnalog_Active
                                       * Referenced by: '<Root>/HIL Read Analog'
                                       */
-  boolean_T HILWriteAnalog_Active;  /* Computed Parameter: HILWriteAnalog_Active
-                                     * Referenced by: '<Root>/HIL Write Analog'
-                                     */
+  uint8_T ManualSwitch_CurrentSetting;
+                              /* Computed Parameter: ManualSwitch_CurrentSetting
+                               * Referenced by: '<Root>/Manual Switch'
+                               */
 };
 
 /* Real-time Model Data Structure */
@@ -1181,13 +1391,6 @@ struct tag_RTM_STP_CTL_T {
     uint32_T clockTick0;
     uint32_T clockTickH0;
     time_T stepSize0;
-    uint32_T clockTick1;
-    uint32_T clockTickH1;
-    time_T stepSize1;
-    struct {
-      uint8_T TID[2];
-    } TaskCounters;
-
     time_T tStart;
     time_T tFinal;
     time_T timeOfLastOutput;
@@ -1201,12 +1404,12 @@ struct tag_RTM_STP_CTL_T {
     int_T *sampleHits;
     int_T *perTaskSampleHits;
     time_T *t;
-    time_T sampleTimesArray[2];
-    time_T offsetTimesArray[2];
-    int_T sampleTimeTaskIDArray[2];
-    int_T sampleHitArray[2];
-    int_T perTaskSampleHitsArray[4];
-    time_T tArray[2];
+    time_T sampleTimesArray[1];
+    time_T offsetTimesArray[1];
+    int_T sampleTimeTaskIDArray[1];
+    int_T sampleHitArray[1];
+    int_T perTaskSampleHitsArray[1];
+    time_T tArray[1];
   } Timing;
 };
 
@@ -1219,16 +1422,10 @@ extern B_STP_CTL_T STP_CTL_B;
 /* Block states (default storage) */
 extern DW_STP_CTL_T STP_CTL_DW;
 
-/* External function called from main */
-extern time_T rt_SimUpdateDiscreteEvents(
-  int_T rtmNumSampTimes, void *rtmTimingData, int_T *rtmSampleHitPtr, int_T
-  *rtmPerTaskSampleHits )
-  ;
-
 /* Model entry point functions */
 extern void STP_CTL_initialize(void);
-extern void STP_CTL_output(int_T tid);
-extern void STP_CTL_update(int_T tid);
+extern void STP_CTL_output(void);
+extern void STP_CTL_update(void);
 extern void STP_CTL_terminate(void);
 
 /*====================*
@@ -1261,5 +1458,7 @@ extern RT_MODEL_STP_CTL_T *const STP_CTL_M;
  * Here is the system hierarchy for this model
  *
  * '<Root>' : 'STP_CTL'
+ * '<S1>'   : 'STP_CTL/CW8060 Outputs'
+ * '<S2>'   : 'STP_CTL/MATLAB Function'
  */
 #endif                                 /* RTW_HEADER_STP_CTL_h_ */

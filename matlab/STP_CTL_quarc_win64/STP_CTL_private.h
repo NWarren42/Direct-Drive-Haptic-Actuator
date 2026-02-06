@@ -7,9 +7,9 @@
  *
  * Code generation for model "STP_CTL".
  *
- * Model version              : 1.1
+ * Model version              : 1.16
  * Simulink Coder version : 9.1 (R2019a) 23-Nov-2018
- * C source code generated on : Wed Nov 19 18:23:30 2025
+ * C source code generated on : Thu Feb  5 20:44:39 2026
  *
  * Target selection: quarc_win64.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -23,24 +23,9 @@
 #include "rtwtypes.h"
 #include "multiword_types.h"
 #include "zero_crossing_types.h"
-#include "STP_CTL.h"
-#ifndef HALF_PI
-#define HALF_PI                        1.5707963267948966192313216916398
-#endif
-
-#ifndef ONE_PI
-#define ONE_PI                         3.1415926535897932384626433832795
-#endif
-
-#ifndef TWO_PI
-#define TWO_PI                         6.2831853071795864769252867665590
-#endif
 
 /* A global buffer for storing error messages (defined in quanser_common library) */
 EXTERN char _rt_error_message[512];
-void STP_CTL_output0(void);
-void STP_CTL_update0(void);
-void STP_CTL_output1(void);
-void STP_CTL_update1(void);
+extern real_T rt_roundd_snf(real_T u);
 
 #endif                                 /* RTW_HEADER_STP_CTL_private_h_ */

@@ -7,9 +7,9 @@
  *
  * Code generation for model "STP_CTL".
  *
- * Model version              : 1.1
+ * Model version              : 1.16
  * Simulink Coder version : 9.1 (R2019a) 23-Nov-2018
- * C source code generated on : Wed Nov 19 18:23:30 2025
+ * C source code generated on : Thu Feb  5 20:44:39 2026
  *
  * Target selection: quarc_win64.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -36,6 +36,7 @@ static uint_T rtDataTypeSizes[] = {
   sizeof(pointer_T),
   sizeof(action_T),
   2*sizeof(uint32_T),
+  sizeof(t_boolean),
   sizeof(t_card)
 };
 
@@ -55,47 +56,54 @@ static const char_T * rtDataTypeNames[] = {
   "pointer_T",
   "action_T",
   "timer_uint32_pair_T",
+  "t_boolean",
   "t_card"
 };
 
 /* data type transitions for block I/O structure */
 static DataTypeTransition rtBTransitions[] = {
-  { (char_T *)(&STP_CTL_B.HILReadAnalog), 0, 0, 1 }
+  { (char_T *)(&STP_CTL_B.F1), 0, 0, 7 }
   ,
 
-  { (char_T *)(&STP_CTL_DW.HILInitialize_AIMinimums[0]), 0, 0, 49 },
+  { (char_T *)(&STP_CTL_DW.HILInitialize_AIMinimums[0]), 0, 0, 91 },
 
-  { (char_T *)(&STP_CTL_DW.HILInitialize_Card), 14, 0, 1 },
+  { (char_T *)(&STP_CTL_DW.HILInitialize_Card), 15, 0, 2 },
 
-  { (char_T *)(&STP_CTL_DW.SmoothSignalGenerator_RWORK.Amp), 0, 0, 1 },
+  { (char_T *)(&STP_CTL_DW.HILWriteDigital_PWORK), 11, 0, 6 },
 
-  { (char_T *)(&STP_CTL_DW.HILReadAnalog_PWORK), 11, 0, 3 },
+  { (char_T *)(&STP_CTL_DW.HILInitialize_DOStates[0]), 6, 0, 21 },
 
-  { (char_T *)(&STP_CTL_DW.HILInitialize_QuadratureModes[0]), 6, 0, 16 }
+  { (char_T *)(&STP_CTL_DW.HILInitialize_POSortedChans), 7, 0, 1 },
+
+  { (char_T *)(&STP_CTL_DW.HILInitialize_DOBits[0]), 8, 0, 2 },
+
+  { (char_T *)(&STP_CTL_DW.HILWriteDigital_Buffer), 14, 0, 2 }
 };
 
 /* data type transition table for block I/O structure */
 static DataTypeTransitionTable rtBTransTable = {
-  6U,
+  8U,
   rtBTransitions
 };
 
 /* data type transitions for Parameters structure */
 static DataTypeTransition rtPTransitions[] = {
-  { (char_T *)(&STP_CTL_P.HILReadAnalog_channels), 7, 0, 2 },
+  { (char_T *)(&STP_CTL_P.HILWriteDigital_channels), 7, 0, 9 },
 
-  { (char_T *)(&STP_CTL_P.HILInitialize_OOTerminate), 0, 0, 18 },
+  { (char_T *)(&STP_CTL_P.Constant4_Value), 0, 0, 30 },
 
-  { (char_T *)(&STP_CTL_P.HILInitialize_CKChannels[0]), 6, 0, 7 },
+  { (char_T *)(&STP_CTL_P.HILInitialize_CKChannels[0]), 6, 0, 9 },
 
-  { (char_T *)(&STP_CTL_P.HILInitialize_AIChannels[0]), 7, 0, 25 },
+  { (char_T *)(&STP_CTL_P.HILInitialize_AIChannels[0]), 7, 0, 45 },
 
-  { (char_T *)(&STP_CTL_P.HILInitialize_Active), 8, 0, 37 }
+  { (char_T *)(&STP_CTL_P.HILInitialize_Active), 8, 0, 74 },
+
+  { (char_T *)(&STP_CTL_P.ManualSwitch_CurrentSetting), 3, 0, 1 }
 };
 
 /* data type transition table for Parameters structure */
 static DataTypeTransitionTable rtPTransTable = {
-  5U,
+  6U,
   rtPTransitions
 };
 
