@@ -7,9 +7,9 @@
  *
  * Code generation for model "STP_CTL".
  *
- * Model version              : 1.16
+ * Model version              : 1.22
  * Simulink Coder version : 9.1 (R2019a) 23-Nov-2018
- * C source code generated on : Thu Feb  5 20:44:39 2026
+ * C source code generated on : Thu Feb  5 21:22:36 2026
  *
  * Target selection: quarc_win64.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -65,7 +65,7 @@ static DataTypeTransition rtBTransitions[] = {
   { (char_T *)(&STP_CTL_B.F1), 0, 0, 7 }
   ,
 
-  { (char_T *)(&STP_CTL_DW.HILInitialize_AIMinimums[0]), 0, 0, 91 },
+  { (char_T *)(&STP_CTL_DW.HILInitialize_AIMinimums[0]), 0, 0, 92 },
 
   { (char_T *)(&STP_CTL_DW.HILInitialize_Card), 15, 0, 2 },
 
@@ -77,7 +77,7 @@ static DataTypeTransition rtBTransitions[] = {
 
   { (char_T *)(&STP_CTL_DW.HILInitialize_DOBits[0]), 8, 0, 2 },
 
-  { (char_T *)(&STP_CTL_DW.HILWriteDigital_Buffer), 14, 0, 2 }
+  { (char_T *)(&STP_CTL_DW.HILWriteDigital1_Buffer), 14, 0, 1 }
 };
 
 /* data type transition table for block I/O structure */
@@ -90,7 +90,7 @@ static DataTypeTransitionTable rtBTransTable = {
 static DataTypeTransition rtPTransitions[] = {
   { (char_T *)(&STP_CTL_P.HILWriteDigital_channels), 7, 0, 9 },
 
-  { (char_T *)(&STP_CTL_P.Constant4_Value), 0, 0, 30 },
+  { (char_T *)(&STP_CTL_P.Constant6_Value), 0, 0, 32 },
 
   { (char_T *)(&STP_CTL_P.HILInitialize_CKChannels[0]), 6, 0, 9 },
 
@@ -98,7 +98,7 @@ static DataTypeTransition rtPTransitions[] = {
 
   { (char_T *)(&STP_CTL_P.HILInitialize_Active), 8, 0, 74 },
 
-  { (char_T *)(&STP_CTL_P.ManualSwitch_CurrentSetting), 3, 0, 1 }
+  { (char_T *)(&STP_CTL_P.ManualSwitch_CurrentSetting), 3, 0, 2 }
 };
 
 /* data type transition table for Parameters structure */

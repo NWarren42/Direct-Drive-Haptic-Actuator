@@ -7,32 +7,39 @@
 %endfunction
 %function ChartDataMap(block, system) void
   %createrecord ChartDataElements {\
-    NumChartData   3 \
+    NumChartData   4 \
     ChartDataDefaults {\
       RecordType   "ChartData"\
       Dimensions   []\
       IsTestPoint  0\
     }\
     ChartData {\
-      Name         "pulses_target"\
+      Name         "time_target"\
       Description  "EmlPersistent"\
       SFName       ""\
       Path         ""\
-      SrcLocation  "STP_CTL:30:489-502"\
+      SrcLocation  "STP_CTL:30:360-371"\
     }\
     ChartData {\
-      Name         "pulses_sent"\
+      Name         "time_elapsed"\
       Description  "EmlPersistent"\
       SFName       ""\
       Path         ""\
-      SrcLocation  "STP_CTL:30:503-514"\
+      SrcLocation  "STP_CTL:30:372-384"\
     }\
     ChartData {\
       Name         "active"\
       Description  "EmlPersistent"\
       SFName       ""\
       Path         ""\
-      SrcLocation  "STP_CTL:30:515-521"\
+      SrcLocation  "STP_CTL:30:385-391"\
+    }\
+    ChartData {\
+      Name         "prev_start"\
+      Description  "EmlPersistent"\
+      SFName       ""\
+      Path         ""\
+      SrcLocation  "STP_CTL:30:392-402"\
     }\
   }
   %return ChartDataElements

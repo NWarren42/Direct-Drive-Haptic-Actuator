@@ -7,9 +7,9 @@
  *
  * Code generation for model "STP_CTL".
  *
- * Model version              : 1.16
+ * Model version              : 1.22
  * Simulink Coder version : 9.1 (R2019a) 23-Nov-2018
- * C source code generated on : Thu Feb  5 20:44:39 2026
+ * C source code generated on : Thu Feb  5 21:22:36 2026
  *
  * Target selection: quarc_win64.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -846,13 +846,13 @@
 
 /* Block signals (default storage) */
 typedef struct {
-  real_T F1;                           /* '<Root>/HIL Read Analog' */
-  real_T T1;                           /* '<Root>/HIL Read Analog' */
-  real_T F2;                           /* '<Root>/HIL Read Analog' */
-  real_T T2;                           /* '<Root>/HIL Read Analog' */
-  real_T F3;                           /* '<Root>/HIL Read Analog' */
-  real_T T3;                           /* '<Root>/HIL Read Analog' */
-  real_T PWM;                          /* '<Root>/MATLAB Function' */
+  real_T F1;                           /* '<Root>/Read F//T Nano25' */
+  real_T T1;                           /* '<Root>/Read F//T Nano25' */
+  real_T F2;                           /* '<Root>/Read F//T Nano25' */
+  real_T T2;                           /* '<Root>/Read F//T Nano25' */
+  real_T F3;                           /* '<Root>/Read F//T Nano25' */
+  real_T T3;                           /* '<Root>/Read F//T Nano25' */
+  real_T frequency;                    /* '<Root>/MATLAB Function' */
 } B_STP_CTL_T;
 
 /* Block states (default storage) for system '<Root>' */
@@ -867,10 +867,11 @@ typedef struct {
   real_T HILInitialize_POValues;       /* '<Root>/HIL Initialize' */
   real_T HILInitialize1_AIMinimums[16];/* '<Root>/HIL Initialize1' */
   real_T HILInitialize1_AIMaximums[16];/* '<Root>/HIL Initialize1' */
-  real_T HILReadAnalog_Buffer[6];      /* '<Root>/HIL Read Analog' */
-  real_T pulses_target;                /* '<Root>/MATLAB Function' */
-  real_T pulses_sent;                  /* '<Root>/MATLAB Function' */
+  real_T ReadFTNano25_Buffer[6];       /* '<Root>/Read F//T Nano25' */
+  real_T time_target;                  /* '<Root>/MATLAB Function' */
+  real_T time_elapsed;                 /* '<Root>/MATLAB Function' */
   real_T active;                       /* '<Root>/MATLAB Function' */
+  real_T prev_start;                   /* '<Root>/MATLAB Function' */
   t_card HILInitialize_Card;           /* '<Root>/HIL Initialize' */
   t_card HILInitialize1_Card;          /* '<Root>/HIL Initialize1' */
   void *HILWriteDigital_PWORK;         /* '<S1>/HIL Write Digital' */
@@ -880,10 +881,10 @@ typedef struct {
     void *LoggedData;
   } PWMOutput_PWORK;                   /* '<Root>/PWM Output' */
 
-  void *HILReadAnalog_PWORK;           /* '<Root>/HIL Read Analog' */
+  void *ReadFTNano25_PWORK;            /* '<Root>/Read F//T Nano25' */
   struct {
     void *LoggedData;
-  } Scope_PWORK;                       /* '<Root>/Scope' */
+  } ForceSensorOutputs_PWORK;          /* '<Root>/Force Sensor Outputs' */
 
   int32_T HILInitialize_DOStates[2];   /* '<Root>/HIL Initialize' */
   int32_T HILInitialize_QuadratureModes[8];/* '<Root>/HIL Initialize' */
@@ -893,7 +894,6 @@ typedef struct {
   int32_T HILInitialize_POPolarityVals;/* '<Root>/HIL Initialize' */
   uint32_T HILInitialize_POSortedChans;/* '<Root>/HIL Initialize' */
   boolean_T HILInitialize_DOBits[2];   /* '<Root>/HIL Initialize' */
-  t_boolean HILWriteDigital_Buffer;    /* '<S1>/HIL Write Digital' */
   t_boolean HILWriteDigital1_Buffer;   /* '<S1>/HIL Write Digital1' */
 } DW_STP_CTL_T;
 
@@ -917,8 +917,14 @@ struct P_STP_CTL_T_ {
   uint32_T HILWritePWM_channels;       /* Mask Parameter: HILWritePWM_channels
                                         * Referenced by: '<S1>/HIL Write PWM'
                                         */
-  uint32_T HILReadAnalog_channels[6];  /* Mask Parameter: HILReadAnalog_channels
-                                        * Referenced by: '<Root>/HIL Read Analog'
+  uint32_T ReadFTNano25_channels[6];   /* Mask Parameter: ReadFTNano25_channels
+                                        * Referenced by: '<Root>/Read F//T Nano25'
+                                        */
+  real_T Constant6_Value;              /* Expression: 0
+                                        * Referenced by: '<Root>/Constant6'
+                                        */
+  real_T Constant2_Value;              /* Expression: 1
+                                        * Referenced by: '<Root>/Constant2'
                                         */
   real_T Constant4_Value;              /* Expression: 0
                                         * Referenced by: '<Root>/Constant4'
@@ -1002,14 +1008,14 @@ struct P_STP_CTL_T_ {
   real_T Constant1_Value;              /* Expression: 1
                                         * Referenced by: '<Root>/Constant1'
                                         */
-  real_T Constant3_Value;              /* Expression: 180
-                                        * Referenced by: '<Root>/Constant3'
+  real_T steppinganglecommand_Value;   /* Expression: 180
+                                        * Referenced by: '<Root>/stepping angle command'
                                         */
-  real_T Constant5_Value;              /* Expression: 10000
-                                        * Referenced by: '<Root>/Constant5'
+  real_T ofmicrosteps_Value;           /* Expression: 2
+                                        * Referenced by: '<Root>/# of microsteps '
                                         */
-  real_T Constant2_Value;              /* Expression: 1
-                                        * Referenced by: '<Root>/Constant2'
+  real_T stepfrequency_Value;          /* Expression: 1000
+                                        * Referenced by: '<Root>/step frequency'
                                         */
   int32_T HILInitialize_CKChannels[2];
                                  /* Computed Parameter: HILInitialize_CKChannels
@@ -1307,13 +1313,17 @@ struct P_STP_CTL_T_ {
   boolean_T HILWritePWM_Active;        /* Computed Parameter: HILWritePWM_Active
                                         * Referenced by: '<S1>/HIL Write PWM'
                                         */
-  boolean_T HILReadAnalog_Active;    /* Computed Parameter: HILReadAnalog_Active
-                                      * Referenced by: '<Root>/HIL Read Analog'
-                                      */
+  boolean_T ReadFTNano25_Active;      /* Computed Parameter: ReadFTNano25_Active
+                                       * Referenced by: '<Root>/Read F//T Nano25'
+                                       */
   uint8_T ManualSwitch_CurrentSetting;
                               /* Computed Parameter: ManualSwitch_CurrentSetting
                                * Referenced by: '<Root>/Manual Switch'
                                */
+  uint8_T ManualSwitch1_CurrentSetting;
+                             /* Computed Parameter: ManualSwitch1_CurrentSetting
+                              * Referenced by: '<Root>/Manual Switch1'
+                              */
 };
 
 /* Real-time Model Data Structure */

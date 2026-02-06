@@ -7,9 +7,9 @@
  *
  * Code generation for model "STP_CTL".
  *
- * Model version              : 1.16
+ * Model version              : 1.22
  * Simulink Coder version : 9.1 (R2019a) 23-Nov-2018
- * C source code generated on : Thu Feb  5 20:44:39 2026
+ * C source code generated on : Thu Feb  5 21:22:36 2026
  *
  * Target selection: quarc_win64.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -38,10 +38,20 @@ P_STP_CTL_T STP_CTL_P = {
    */
   0U,
 
-  /* Mask Parameter: HILReadAnalog_channels
-   * Referenced by: '<Root>/HIL Read Analog'
+  /* Mask Parameter: ReadFTNano25_channels
+   * Referenced by: '<Root>/Read F//T Nano25'
    */
   { 0U, 1U, 2U, 3U, 4U, 5U },
+
+  /* Expression: 0
+   * Referenced by: '<Root>/Constant6'
+   */
+  0.0,
+
+  /* Expression: 1
+   * Referenced by: '<Root>/Constant2'
+   */
+  1.0,
 
   /* Expression: 0
    * Referenced by: '<Root>/Constant4'
@@ -179,19 +189,19 @@ P_STP_CTL_T STP_CTL_P = {
   1.0,
 
   /* Expression: 180
-   * Referenced by: '<Root>/Constant3'
+   * Referenced by: '<Root>/stepping angle command'
    */
   180.0,
 
-  /* Expression: 10000
-   * Referenced by: '<Root>/Constant5'
+  /* Expression: 2
+   * Referenced by: '<Root>/# of microsteps '
    */
-  10000.0,
+  2.0,
 
-  /* Expression: 1
-   * Referenced by: '<Root>/Constant2'
+  /* Expression: 1000
+   * Referenced by: '<Root>/step frequency'
    */
-  1.0,
+  1000.0,
 
   /* Computed Parameter: HILInitialize_CKChannels
    * Referenced by: '<Root>/HIL Initialize'
@@ -633,13 +643,18 @@ P_STP_CTL_T STP_CTL_P = {
    */
   0,
 
-  /* Computed Parameter: HILReadAnalog_Active
-   * Referenced by: '<Root>/HIL Read Analog'
+  /* Computed Parameter: ReadFTNano25_Active
+   * Referenced by: '<Root>/Read F//T Nano25'
    */
   1,
 
   /* Computed Parameter: ManualSwitch_CurrentSetting
    * Referenced by: '<Root>/Manual Switch'
+   */
+  1U,
+
+  /* Computed Parameter: ManualSwitch1_CurrentSetting
+   * Referenced by: '<Root>/Manual Switch1'
    */
   0U
 };
