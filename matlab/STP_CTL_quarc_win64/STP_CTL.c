@@ -7,9 +7,9 @@
  *
  * Code generation for model "STP_CTL".
  *
- * Model version              : 1.22
+ * Model version              : 1.26
  * Simulink Coder version : 9.1 (R2019a) 23-Nov-2018
- * C source code generated on : Thu Feb  5 21:22:36 2026
+ * C source code generated on : Thu Feb  5 21:56:09 2026
  *
  * Target selection: quarc_win64.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -55,7 +55,44 @@ void STP_CTL_output(void)
   /* local block i/o variables */
   boolean_T rtb_NOT;
   boolean_T start_edge;
-  real_T rtb_ManualSwitch1;
+  real_T Tx_zeroed;
+  real_T rtb_ManualSwitch2;
+
+  /* ManualSwitch: '<Root>/Manual Switch2' incorporates:
+   *  Constant: '<Root>/Constant3'
+   *  Constant: '<Root>/Constant5'
+   */
+  if (STP_CTL_P.ManualSwitch2_CurrentSetting == 1) {
+    rtb_ManualSwitch2 = STP_CTL_P.Constant3_Value;
+  } else {
+    rtb_ManualSwitch2 = STP_CTL_P.Constant5_Value;
+  }
+
+  /* End of ManualSwitch: '<Root>/Manual Switch2' */
+
+  /* MATLAB Function: '<Root>/MATLAB Function1' incorporates:
+   *  Constant: '<Root>/# of microsteps 1'
+   *  Constant: '<Root>/step frequency1'
+   *  Constant: '<Root>/stepping angle command1'
+   */
+  start_edge = ((rtb_ManualSwitch2 != 0.0) && (!(STP_CTL_DW.prev_start != 0.0)));
+  STP_CTL_DW.prev_start = rtb_ManualSwitch2;
+  if (start_edge) {
+    STP_CTL_DW.time_target = fabs(rt_roundd_snf(200.0 *
+      STP_CTL_P.ofmicrosteps1_Value * STP_CTL_P.steppinganglecommand1_Value /
+      360.0)) / STP_CTL_P.stepfrequency1_Value;
+    STP_CTL_DW.time_elapsed = 0.0;
+    STP_CTL_DW.active = 1.0;
+  }
+
+  if (STP_CTL_DW.active != 0.0) {
+    STP_CTL_DW.time_elapsed += 0.001;
+    if (STP_CTL_DW.time_elapsed >= STP_CTL_DW.time_target) {
+      STP_CTL_DW.active = 0.0;
+    }
+  }
+
+  /* End of MATLAB Function: '<Root>/MATLAB Function1' */
 
   /* ManualSwitch: '<Root>/Manual Switch' */
   if (STP_CTL_P.ManualSwitch_CurrentSetting == 1) {
@@ -86,79 +123,6 @@ void STP_CTL_output(void)
     }
   }
 
-  /* S-Function (hil_write_digital_block): '<S1>/HIL Write Digital1' incorporates:
-   *  Constant: '<Root>/Constant1'
-   */
-
-  /* S-Function Block: STP_CTL/CW8060 Outputs/HIL Write Digital1 (hil_write_digital_block) */
-  {
-    t_error result;
-    STP_CTL_DW.HILWriteDigital1_Buffer = (STP_CTL_P.Constant1_Value != 0);
-    result = hil_write_digital(STP_CTL_DW.HILInitialize_Card,
-      &STP_CTL_P.HILWriteDigital1_channels, 1,
-      &STP_CTL_DW.HILWriteDigital1_Buffer);
-    if (result < 0) {
-      msg_get_error_messageA(NULL, result, _rt_error_message, sizeof
-        (_rt_error_message));
-      rtmSetErrorStatus(STP_CTL_M, _rt_error_message);
-    }
-  }
-
-  /* ManualSwitch: '<Root>/Manual Switch1' incorporates:
-   *  Constant: '<Root>/Constant2'
-   *  Constant: '<Root>/Constant6'
-   */
-  if (STP_CTL_P.ManualSwitch1_CurrentSetting == 1) {
-    rtb_ManualSwitch1 = STP_CTL_P.Constant2_Value;
-  } else {
-    rtb_ManualSwitch1 = STP_CTL_P.Constant6_Value;
-  }
-
-  /* End of ManualSwitch: '<Root>/Manual Switch1' */
-
-  /* MATLAB Function: '<Root>/MATLAB Function' incorporates:
-   *  Constant: '<Root>/# of microsteps '
-   *  Constant: '<Root>/step frequency'
-   *  Constant: '<Root>/stepping angle command'
-   */
-  start_edge = ((rtb_ManualSwitch1 != 0.0) && (!(STP_CTL_DW.prev_start != 0.0)));
-  STP_CTL_DW.prev_start = rtb_ManualSwitch1;
-  if (start_edge) {
-    STP_CTL_DW.time_target = fabs(rt_roundd_snf(200.0 *
-      STP_CTL_P.ofmicrosteps_Value * STP_CTL_P.steppinganglecommand_Value /
-      360.0)) / STP_CTL_P.stepfrequency_Value;
-    STP_CTL_DW.time_elapsed = 0.0;
-    STP_CTL_DW.active = 1.0;
-  }
-
-  if (STP_CTL_DW.active != 0.0) {
-    STP_CTL_DW.time_elapsed += 0.001;
-    if (STP_CTL_DW.time_elapsed >= STP_CTL_DW.time_target) {
-      STP_CTL_B.frequency = 0.0;
-      STP_CTL_DW.active = 0.0;
-    } else {
-      STP_CTL_B.frequency = STP_CTL_P.stepfrequency_Value;
-    }
-  } else {
-    STP_CTL_B.frequency = 0.0;
-  }
-
-  /* End of MATLAB Function: '<Root>/MATLAB Function' */
-
-  /* S-Function (hil_write_pwm_block): '<S1>/HIL Write PWM' */
-
-  /* S-Function Block: STP_CTL/CW8060 Outputs/HIL Write PWM (hil_write_pwm_block) */
-  {
-    t_error result;
-    result = hil_write_pwm(STP_CTL_DW.HILInitialize_Card,
-      &STP_CTL_P.HILWritePWM_channels, 1, &STP_CTL_B.frequency);
-    if (result < 0) {
-      msg_get_error_messageA(NULL, result, _rt_error_message, sizeof
-        (_rt_error_message));
-      rtmSetErrorStatus(STP_CTL_M, _rt_error_message);
-    }
-  }
-
   /* S-Function (hil_read_analog_block): '<Root>/Read F//T Nano25' */
 
   /* S-Function Block: STP_CTL/Read F//T Nano25 (hil_read_analog_block) */
@@ -177,6 +141,74 @@ void STP_CTL_output(void)
     STP_CTL_B.T2 = STP_CTL_DW.ReadFTNano25_Buffer[3];
     STP_CTL_B.F3 = STP_CTL_DW.ReadFTNano25_Buffer[4];
     STP_CTL_B.T3 = STP_CTL_DW.ReadFTNano25_Buffer[5];
+  }
+
+  /* ManualSwitch: '<Root>/Zeroing Switch' incorporates:
+   *  Constant: '<Root>/Constant1'
+   *  Constant: '<Root>/Constant2'
+   */
+  if (STP_CTL_P.ZeroingSwitch_CurrentSetting == 1) {
+    rtb_ManualSwitch2 = STP_CTL_P.Constant1_Value;
+  } else {
+    rtb_ManualSwitch2 = STP_CTL_P.Constant2_Value;
+  }
+
+  /* End of ManualSwitch: '<Root>/Zeroing Switch' */
+
+  /* MATLAB Function: '<Root>/MATLAB Function' incorporates:
+   *  Constant: '<Root>/Sensitivity Scalar'
+   */
+  if (rtb_ManualSwitch2 != 0.0) {
+    STP_CTL_DW.Tx_zero = STP_CTL_B.T1;
+    STP_CTL_DW.is_zeroed = true;
+    STP_CTL_B.frequency = 0.0;
+    rtb_ManualSwitch2 = 1.0;
+  } else {
+    if (!STP_CTL_DW.is_zeroed) {
+      STP_CTL_DW.Tx_zero = STP_CTL_B.T1;
+      STP_CTL_DW.is_zeroed = true;
+    }
+
+    Tx_zeroed = STP_CTL_B.T1 - STP_CTL_DW.Tx_zero;
+    rtb_ManualSwitch2 = (Tx_zeroed >= 0.0);
+    Tx_zeroed = fabs(Tx_zeroed) * STP_CTL_P.SensitivityScalar_Value;
+    if (Tx_zeroed > 1.0) {
+      Tx_zeroed = 1.0;
+    }
+
+    STP_CTL_B.frequency = Tx_zeroed * 30000.0;
+  }
+
+  /* End of MATLAB Function: '<Root>/MATLAB Function' */
+
+  /* S-Function (hil_write_digital_block): '<S1>/HIL Write Digital1' */
+
+  /* S-Function Block: STP_CTL/CW8060 Outputs/HIL Write Digital1 (hil_write_digital_block) */
+  {
+    t_error result;
+    STP_CTL_DW.HILWriteDigital1_Buffer = (rtb_ManualSwitch2 != 0);
+    result = hil_write_digital(STP_CTL_DW.HILInitialize_Card,
+      &STP_CTL_P.HILWriteDigital1_channels, 1,
+      &STP_CTL_DW.HILWriteDigital1_Buffer);
+    if (result < 0) {
+      msg_get_error_messageA(NULL, result, _rt_error_message, sizeof
+        (_rt_error_message));
+      rtmSetErrorStatus(STP_CTL_M, _rt_error_message);
+    }
+  }
+
+  /* S-Function (hil_write_pwm_block): '<S1>/HIL Write PWM' */
+
+  /* S-Function Block: STP_CTL/CW8060 Outputs/HIL Write PWM (hil_write_pwm_block) */
+  {
+    t_error result;
+    result = hil_write_pwm(STP_CTL_DW.HILInitialize_Card,
+      &STP_CTL_P.HILWritePWM_channels, 1, &STP_CTL_B.frequency);
+    if (result < 0) {
+      msg_get_error_messageA(NULL, result, _rt_error_message, sizeof
+        (_rt_error_message));
+      rtmSetErrorStatus(STP_CTL_M, _rt_error_message);
+    }
   }
 }
 
@@ -582,11 +614,15 @@ void STP_CTL_initialize(void)
     }
   }
 
-  /* SystemInitialize for MATLAB Function: '<Root>/MATLAB Function' */
+  /* SystemInitialize for MATLAB Function: '<Root>/MATLAB Function1' */
   STP_CTL_DW.time_target = 0.0;
   STP_CTL_DW.time_elapsed = 0.0;
   STP_CTL_DW.active = 0.0;
   STP_CTL_DW.prev_start = 0.0;
+
+  /* SystemInitialize for MATLAB Function: '<Root>/MATLAB Function' */
+  STP_CTL_DW.Tx_zero = 0.0;
+  STP_CTL_DW.is_zeroed = false;
 }
 
 /* Model terminate function */
@@ -783,15 +819,15 @@ RT_MODEL_STP_CTL_T *STP_CTL(void)
   STP_CTL_M->Timing.stepSize0 = 0.001;
 
   /* External mode info */
-  STP_CTL_M->Sizes.checksums[0] = (3670397764U);
-  STP_CTL_M->Sizes.checksums[1] = (3447541164U);
-  STP_CTL_M->Sizes.checksums[2] = (1500529246U);
-  STP_CTL_M->Sizes.checksums[3] = (922029428U);
+  STP_CTL_M->Sizes.checksums[0] = (503577440U);
+  STP_CTL_M->Sizes.checksums[1] = (2703316284U);
+  STP_CTL_M->Sizes.checksums[2] = (2811831693U);
+  STP_CTL_M->Sizes.checksums[3] = (1158389662U);
 
   {
     static const sysRanDType rtAlwaysEnabled = SUBSYS_RAN_BC_ENABLE;
     static RTWExtModeInfo rt_ExtModeInfo;
-    static const sysRanDType *systemRan[6];
+    static const sysRanDType *systemRan[9];
     STP_CTL_M->extModeInfo = (&rt_ExtModeInfo);
     rteiSetSubSystemActiveVectorAddresses(&rt_ExtModeInfo, systemRan);
     systemRan[0] = &rtAlwaysEnabled;
@@ -800,6 +836,9 @@ RT_MODEL_STP_CTL_T *STP_CTL(void)
     systemRan[3] = &rtAlwaysEnabled;
     systemRan[4] = &rtAlwaysEnabled;
     systemRan[5] = &rtAlwaysEnabled;
+    systemRan[6] = &rtAlwaysEnabled;
+    systemRan[7] = &rtAlwaysEnabled;
+    systemRan[8] = &rtAlwaysEnabled;
     rteiSetModelMappingInfoPtr(STP_CTL_M->extModeInfo,
       &STP_CTL_M->SpecialInfo.mappingInfo);
     rteiSetChecksumsPtr(STP_CTL_M->extModeInfo, STP_CTL_M->Sizes.checksums);
@@ -847,9 +886,9 @@ RT_MODEL_STP_CTL_T *STP_CTL(void)
   STP_CTL_M->Sizes.numU = (0);         /* Number of model inputs */
   STP_CTL_M->Sizes.sysDirFeedThru = (0);/* The model is not direct feedthrough */
   STP_CTL_M->Sizes.numSampTimes = (1); /* Number of sample times */
-  STP_CTL_M->Sizes.numBlocks = (25);   /* Number of blocks */
+  STP_CTL_M->Sizes.numBlocks = (32);   /* Number of blocks */
   STP_CTL_M->Sizes.numBlockIO = (7);   /* Number of block outputs */
-  STP_CTL_M->Sizes.numBlockPrms = (171);/* Sum of parameter "widths" */
+  STP_CTL_M->Sizes.numBlockPrms = (174);/* Sum of parameter "widths" */
   return STP_CTL_M;
 }
 

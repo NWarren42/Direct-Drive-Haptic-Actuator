@@ -7,9 +7,9 @@
  *
  * Code generation for model "STP_CTL".
  *
- * Model version              : 1.22
+ * Model version              : 1.26
  * Simulink Coder version : 9.1 (R2019a) 23-Nov-2018
- * C source code generated on : Thu Feb  5 21:22:36 2026
+ * C source code generated on : Thu Feb  5 21:56:09 2026
  *
  * Target selection: quarc_win64.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -28,6 +28,11 @@ P_STP_CTL_T STP_CTL_P = {
    */
   1U,
 
+  /* Mask Parameter: ReadFTNano25_channels
+   * Referenced by: '<Root>/Read F//T Nano25'
+   */
+  { 0U, 1U, 2U, 3U, 4U, 5U },
+
   /* Mask Parameter: HILWriteDigital1_channels
    * Referenced by: '<S1>/HIL Write Digital1'
    */
@@ -38,18 +43,23 @@ P_STP_CTL_T STP_CTL_P = {
    */
   0U,
 
-  /* Mask Parameter: ReadFTNano25_channels
-   * Referenced by: '<Root>/Read F//T Nano25'
-   */
-  { 0U, 1U, 2U, 3U, 4U, 5U },
-
   /* Expression: 0
-   * Referenced by: '<Root>/Constant6'
+   * Referenced by: '<Root>/Constant2'
    */
   0.0,
 
   /* Expression: 1
-   * Referenced by: '<Root>/Constant2'
+   * Referenced by: '<Root>/Constant1'
+   */
+  1.0,
+
+  /* Expression: 0
+   * Referenced by: '<Root>/Constant5'
+   */
+  0.0,
+
+  /* Expression: 1
+   * Referenced by: '<Root>/Constant3'
    */
   1.0,
 
@@ -183,25 +193,25 @@ P_STP_CTL_T STP_CTL_P = {
    */
   0.0,
 
-  /* Expression: 1
-   * Referenced by: '<Root>/Constant1'
+  /* Expression: 256
+   * Referenced by: '<Root>/# of microsteps 1'
    */
-  1.0,
+  256.0,
 
   /* Expression: 180
-   * Referenced by: '<Root>/stepping angle command'
+   * Referenced by: '<Root>/stepping angle command1'
    */
   180.0,
 
-  /* Expression: 2
-   * Referenced by: '<Root>/# of microsteps '
+  /* Expression: 300000
+   * Referenced by: '<Root>/step frequency1'
    */
-  2.0,
+  300000.0,
 
-  /* Expression: 1000
-   * Referenced by: '<Root>/step frequency'
+  /* Expression: 1
+   * Referenced by: '<Root>/Sensitivity Scalar'
    */
-  1000.0,
+  1.0,
 
   /* Computed Parameter: HILInitialize_CKChannels
    * Referenced by: '<Root>/HIL Initialize'
@@ -633,6 +643,11 @@ P_STP_CTL_T STP_CTL_P = {
    */
   0,
 
+  /* Computed Parameter: ReadFTNano25_Active
+   * Referenced by: '<Root>/Read F//T Nano25'
+   */
+  1,
+
   /* Computed Parameter: HILWriteDigital1_Active
    * Referenced by: '<S1>/HIL Write Digital1'
    */
@@ -643,18 +658,18 @@ P_STP_CTL_T STP_CTL_P = {
    */
   0,
 
-  /* Computed Parameter: ReadFTNano25_Active
-   * Referenced by: '<Root>/Read F//T Nano25'
+  /* Computed Parameter: ManualSwitch2_CurrentSetting
+   * Referenced by: '<Root>/Manual Switch2'
    */
-  1,
+  1U,
 
   /* Computed Parameter: ManualSwitch_CurrentSetting
    * Referenced by: '<Root>/Manual Switch'
    */
   1U,
 
-  /* Computed Parameter: ManualSwitch1_CurrentSetting
-   * Referenced by: '<Root>/Manual Switch1'
+  /* Computed Parameter: ZeroingSwitch_CurrentSetting
+   * Referenced by: '<Root>/Zeroing Switch'
    */
   0U
 };
